@@ -1,0 +1,9 @@
+# Observability
+
+The service must answer: Is the model ready? Are requests waiting, failing or slowing? Is GPU memory limiting useful throughput? Native metrics are preferred; exact names are captured from the pinned release, not assumed from latest docs. Instrument ingress for rejected requests because engine metrics cannot see requests never admitted.
+
+Dashboard groups: readiness/restarts; ingress rate and 4xx/5xx by bounded category; active/waiting requests; TTFT and end-to-end histograms; generated tokens and tokens/sec; GPU memory/utilization/temperature; cache reuse measurements; telemetry drops. Histogram units and boundaries must cover the provisional 2-second TTFT and 15-second completion budgets. Do not average p95 values across runs; aggregate raw histogram buckets or report per-run quantiles.
+
+Proposed alerts: unavailable >2 minutes while expected running; sustained valid-request error ratio >1% for 5 minutes with >=100 requests; queue wait p95 >5 seconds for 5 minutes; any OOM or repeated restart; telemetry missing >5 minutes. Low-traffic services require an explicit private probe rather than ratio-only alerts. During planned offline periods alert routing is silenced intentionally. An alert links the deployment/profile and runbook, never request text.
+
+Structured logs: timestamp, severity, request_id, bounded route/status, model alias, profile_id, duration and token usage source. No bodies, Authorization headers, full URLs, user identifiers or cache keys. Retain metadata 7 days initially with access restricted to operator. Metrics retained 15 days; benchmark aggregates are separate. Scrape every 15 seconds as a proposed default; cap label cardinality and disk usage. Validate leaks using distinctive synthetic canaries in input, output and credentials. Optional Project 09 export is asynchronous/bounded and cannot become an availability dependency.

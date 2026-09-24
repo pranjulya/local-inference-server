@@ -1,0 +1,23 @@
+# Benchmark and quality strategy
+
+Status: PROPOSED. Freeze this protocol before interpreting optimizations; no measurements exist yet.
+
+## Experimental matrix
+Run baseline first: identical model/tokenizer revision, floating-point weights, supported default KV dtype, cache disabled explicitly if supported. Then change prefix caching only; then selected weight quantization only; then optionally KV dtype only. Combined winning settings are a final confirmation run, never evidence of an isolated causal effect. If a baseline cannot fit, select a smaller model that fits before comparison; do not compare unrelated models and call the delta quantization.
+
+Workloads: short 128/128, normal 512/128, long 2,048/256 input/output-token targets; concurrency 1, 2, 4, then bounded overload above the declared envelope. Tokenize with the selected chat template and record actual lengths. Repeated-prefix corpus shares a synthetic 1,500-token prefix; control corpus has unique prefixes of the same length. Separate cold process/model startup, empty cache, warmed cache and steady-state trials. No customer data.
+
+For each primary matrix cell: 20 warm-up requests excluded and 500 measured requests, three repetitions with randomized candidate order and idle cooldown sufficient to stabilize GPU temperature. Record start/end clocks, GPU utilization/temperature, memory, driver/image/model revisions, profile, dataset hash, seed, load-generator placement and failure counts. Report median and p95 TTFT, inter-token latency, complete latency, requests/sec, output tokens/sec, peak VRAM, queue wait, rejection rate and successful goodput under latency budget. Confidence intervals or trial ranges accompany aggregates; never discard failed requests to improve latency without reporting them.
+
+## Quality protocol
+Use a versioned 100-item synthetic/permissively licensed suite: 25 extraction, 25 instruction following, 25 short reasoning, 25 grounded summarization cases. Split tuning and held-out cases (50/50), maintain deterministic exact checks where possible and a written 0/1/2 human rubric elsewhere. Normalize score to 0–100. Temperature zero reduces variation but is not a reproducibility guarantee. Critical cases include required refusal of absent evidence and preservation of numeric facts in summaries; define labels before runs. Quantized release gate: <=2-point aggregate regression and no critical-case regression, with reviewer adjudication of ambiguous scoring. Publish suite limits, sample size and paired differences; do not claim general intelligence from this suite.
+
+## Acceptance and interpretation
+PRD budgets are provisional and must be ratified at Phase 00 before tuning. Cache trial target: >=20% median TTFT gain for repeated prefixes, while unique-prefix p95 must not regress >10%; explain null/negative findings. Quantization must meet quality gate and show measured VRAM reduction; latency can worsen and must be disclosed. Supported-but-ineffective optimization can remain an experiment rather than promoted production profile. Unsupported KV quantization is an explicit compatibility outcome, not a phase failure or fabricated benchmark.
+
+Every report has hypothesis, environment manifest, protocol, raw-result location/hash, exclusions, results, uncertainty, failure evidence and decision. Store raw synthetic request records only as long as needed for reproducibility; default 30 days, final aggregate/provenance indefinitely in repository if approved. Full release includes 30-minute soak, overload, disconnect, worker-kill and rollback drills. No load test of external systems is planned.
+
+## Evidence manifest for Project 11
+Each releasable experiment supplies a conceptual manifest (file schema is chosen during implementation): run_id; project_id=P08; source_commit; environment (GPU, OS, driver, runtime/image digest); model (weights/tokenizer revisions, license reference); dataset (ID/hash, split and provenance); config (profile/hash and effective arguments); protocol (version/hash, warm-up, repetitions and exclusions); artifacts (relative locations, hashes and visibility/sanitization review); metrics (name, value, unit, aggregation, sample count and uncertainty); limits (scope, failures, unsupported features and hardware dependence). Missing values stay explicit unknowns.
+
+Project 11 consumes a reviewed immutable evidence bundle and links claims to run_id plus artifact, rather than copying an untraceable headline number. Artifact paths become publication URLs only after publication approval. Include failed/rejected candidate reports where useful; never imply that a planned metric was measured. No private credentials, prompts or infrastructure addresses enter the public manifest.

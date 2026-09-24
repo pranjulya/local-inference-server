@@ -1,0 +1,5 @@
+# Project 08 agent instructions
+
+Read Implementation.md first; it controls scope/status. Planning package only until user authorizes a phase. Never change NOT_STARTED to COMPLETE based on documentation creation. Implement one approved phase at a time, preserve unrelated edits, and use native vLLM/platform features before custom code. Exact hardware/software/model facts require evidence; GPU results cannot be simulated on an unsupported laptop and reported as measured.
+
+Follow docs/coding-agent-workflow.md and docs/definition-of-done.md. Read the benchmark strategy before tuning. All ADRs begin PROPOSED. Keep API compatibility limited to documented routes and fields. No provider fallback, no public ingress, no paid resource provisioning or model license acceptance without applicable authorization. Never persist prompts/credentials in telemetry. If graph tooling is available, confirm project/generation and coverage before structural claims; otherwise disclose fallback and inspect source. Update learning notes and attach real test evidence at each phase review.

@@ -1,0 +1,11 @@
+# Security and privacy
+
+Threat model: authenticated clients can submit oversized or adversarial requests; an accidentally exposed management endpoint can reveal metadata or permit abuse; untrusted model artifacts can compromise the host; logs can leak text and credentials. Trusted operator/root and GPU host are out of scope for adversarial isolation. Model content safety is not guaranteed by serving controls.
+
+Default network boundary is loopback/private network with authenticated ingress and an explicit endpoint allowlist. Keep health, metrics, docs, debug and administration private. Do not assume native API keys protect every endpoint. No tools, dynamic adapters, remote media or runtime model downloads in V1. Enforce body/token/generation/concurrency limits at the appropriate boundary; verify each bypass case with the chosen release. TLS is required for any non-loopback network path carrying credentials.
+
+Pin image and model revisions; review model license and artifact source before download. Avoid trust_remote_code; if unavoidable, perform a separate code review and record the exception before execution. Use read-only model mounts, non-root runtime where supported, least filesystem access and external secrets. Disable unnecessary telemetry/egress after evaluating the pinned runtime's behavior; prove no provider requests or prompt egress under test. No raw request/response logs. Synthetic data only for published examples.
+
+Cache contains information derived from prompts. Single trust domain is the initial boundary; cache sharing is not strong isolation. Before adding tenants, review prefix timing side channels and supported cache isolation/salting mechanisms or use separate instances. Do not expose cache reset or configuration controls to clients. Clearing process state is part of lifecycle, but is not a certified GPU-memory erasure claim.
+
+Incident: remove ingress access, preserve metadata only, rotate affected credentials, stop suspect artifact use, rebuild from verified profile, retest and document cause. Dependency updates require compatibility/quality checks before promotion. Residual risks include model vulnerabilities, denial of service within accepted limits, host compromise and undetected sensitive content. Project 10 is optional additional defense, never a substitute for these controls.
