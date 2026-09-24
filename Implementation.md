@@ -8,15 +8,16 @@ Build a reproducible, private, single-GPU text inference service using vLLM. Dem
 ## Workspace and assumptions
 Planning began without a Project 08 repository: none was found in the bounded registered-project and src/genAI inventory examined by the coordinating architect, and no graph tools/index generation were available. On 2026-09-24 the repository was created and this folder became its working tree — origin `https://github.com/pranjulya/local-inference-server.git`, default branch `main`, planning package committed as the root commit. Whether implementation proceeds in this working tree or in an isolated worktree remains a Phase 00 decision.
 
-Recommended target: one Linux host with one supported NVIDIA GPU. The present Apple workstation is a planning/client machine, not the assumed CUDA inference host. Begin with one instruction-tuned, permissively licensed model small enough for a floating-point baseline and a supported quantized sibling. Exact GPU, VRAM, model revision, vLLM release/image digest, driver and quantization backend are unresolved until compatibility evidence exists. No cloud spend, model license acceptance or public exposure is authorized by this plan.
+Recommended target: one Linux host with one supported NVIDIA GPU. The present Apple workstation is a planning/client machine, not the assumed CUDA inference host, and no Linux GPU host is available to this project as of 2026-09-24. Phase 00 therefore proceeds as a documentation-only feasibility record with GPU execution explicitly blocked; Phases 01–06 cannot produce measured evidence until a host is authorized. Begin with one instruction-tuned, permissively licensed model small enough for a floating-point baseline and a supported quantized sibling. Exact GPU, VRAM, model revision, vLLM release/image digest, driver and quantization backend are unresolved until compatibility evidence exists. No cloud spend, model license acceptance or public exposure is authorized by this plan.
 
 ## Read order and gates
 1. [PRD](docs/product/PRD.md): approve product boundary.
 2. [ADRs](docs/architecture/ADRs/README.md) and [HLD](docs/architecture/HLD.md): review alternatives and trust boundaries.
-3. [Benchmark strategy](docs/evaluation/benchmark-strategy.md): freeze workload and quality gates before tuning.
-4. [LLD](docs/architecture/LLD.md): review concrete contracts against those gates.
-5. [Phase map](implementation/dependency-map.md) and [workflow](docs/coding-agent-workflow.md): authorize only the next phase.
-6. [Learning path](Learning/learning-path.md): explain the design before implementation.
+3. [Threat model](docs/architecture/threat-model.md), [planning gap analysis](docs/architecture/planning-gap-analysis.md) and [architecture review](docs/architecture/architecture-review.md): dispose findings and record ADR accept/revise/reject before any phase starts.
+4. [Benchmark strategy](docs/evaluation/benchmark-strategy.md): freeze workload and quality gates before tuning.
+5. [LLD](docs/architecture/LLD.md): review concrete contracts against those gates.
+6. [Phase map](implementation/dependency-map.md) and [workflow](docs/coding-agent-workflow.md): authorize only the next phase.
+7. [Learning path](Learning/learning-path.md): explain the design before implementation.
 
 ## Phase ledger
 | Phase | Outcome | Status |
