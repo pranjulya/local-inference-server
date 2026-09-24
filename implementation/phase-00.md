@@ -9,7 +9,7 @@ Prove a legal, affordable, supported execution target before building.
 Prevent unsupported hardware assumptions and expensive rework.
 
 ## Prerequisites
-Planning review; repository destination and permitted hardware inventory.
+Planning review; permitted hardware inventory; implementation working-tree/worktree choice.
 
 ## Architecture impact
 Fixes deployment boundary and benchmark feasibility without running a service.
@@ -22,7 +22,7 @@ docs/architecture/ADRs/004-runtime-selection.md; docs/evaluation/environment-man
 2. Check a pinned vLLM release against the GPU and candidate model architecture, then choose one licensed floating-point model and a supported quantized sibling.
 3. Estimate weight, KV and runtime memory at 4,096 total tokens and concurrency four; select a smaller baseline if floating-point weights cannot fit safely.
 4. Record approved compute/spend ceiling, download size, license terms and private network boundary; no purchase or license acceptance is implied.
-5. Locate or create the approved repository and isolated worktree during authorized implementation; freeze dataset/protocol and provisional budgets before optimization.
+5. Confirm the implementation working tree or isolated worktree for the already-established repository; freeze dataset/protocol and provisional budgets before optimization.
 
 ## Tests
 Planned checks only; none have been run. Use accepted Phase 00 budgets if explicitly revised before measurement.
@@ -32,13 +32,13 @@ Planned checks only; none have been run. Use accepted Phase 00 budgets if explic
 | GPU inventory absent | Review available host evidence | Mark GPU execution blocked; do not substitute Apple client hardware or claim compatibility. |
 | 4,096 tokens × 4 requests | Calculate architecture-specific KV estimate plus weights/workspace margin | Record a plausible fit or reduce proposed envelope/model before approval. |
 | Moving model tag or image tag | Resolve immutable revisions/digests | Manifest contains exact candidate revisions and license source; no latest-only selection. |
-| No approved repository destination | Review workspace record | Keep fallback package and record unresolved destination; no unrelated repository worktree. |
+| Implementation working-tree/worktree choice unresolved | Review workspace record | Record the chosen implementation tree before coding; no unrelated repository worktree. |
 
 ## Failure scenarios
-No GPU; insufficient VRAM; gated license; no repository ownership; quantization kernel unsupported.
+No GPU; insufficient VRAM; gated license; quantization kernel unsupported.
 
 ## Acceptance criteria
-Reviewed hardware/budget/license record and exact candidate revisions; baseline can plausibly fit with safety margin; suitable repository/worktree exists or blocker recorded; benchmark budgets accepted before runs.
+Reviewed hardware/budget/license record and exact candidate revisions; baseline can plausibly fit with safety margin; implementation working tree recorded; benchmark budgets accepted before runs.
 
 ## Learning objectives
 Memory accounting and evidence-based choices.
